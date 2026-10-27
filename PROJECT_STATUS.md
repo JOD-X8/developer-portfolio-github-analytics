@@ -2,7 +2,7 @@
 
 **Target Profile:** [https://github.com/JOD-X8](https://github.com/JOD-X8)  
 **Last Updated:** October 27, 2026  
-**Current Phase:** Phase 2 — Portfolio UI & Scaffolding Completed  
+**Current Phase:** Phase 3 — GitHub API Integration Completed  
 **Primary Assistant:** Antigravity  
 **Manual Fallback:** VS Code & PowerShell  
 
@@ -15,10 +15,10 @@
 
 | Attribute | Details |
 | :--- | :--- |
-| **Active / Completed Milestone** | **Milestone 2 (Completed) & Milestone 3 (Portfolio UI Initial Foundation Completed)** |
-| **Status** | **Ready for Review** |
-| **Upcoming Milestone** | **Milestone 4: GitHub API Integration** |
-| **Goal for Milestone 4** | Connect the GitHub REST API client to replace placeholder statistics and power live public repository search, language filters, and sorting for `JOD-X8`. |
+| **Completed Milestones** | **Milestone 1 (Design), Milestone 2 (Foundation), Milestone 3 (Portfolio UI), Milestone 4 (GitHub API Integration)** |
+| **Status** | **Milestone 4 Completed — Ready for Review** |
+| **Upcoming Milestone** | **Milestone 5: PostgreSQL & Prisma Historical Snapshots** |
+| **Goal for Milestone 5** | Model `TrackedProfile` and `StatsSnapshot` entities in Prisma, execute PostgreSQL migrations, implement daily deduplication (`YYYY-MM-DD`), and build the interactive Historical Analytics charts. |
 
 ---
 
@@ -29,32 +29,40 @@
   - Defined color system: Background `#0B0D0C`, Cards `#171A18`, Neon-Lime Accent `#B7FF3C`, Primary Text `#E8ECE8`.
   - Defined mobile and desktop responsive layout guidelines.
 - [x] **Milestone 2: Documentation & Project Foundation**
-  - [x] Completed `docs/PROJECT_SPEC.md` specification file (including daily normalized deduplication rule).
-  - [x] Completed `PROJECT_STATUS.md` tracking file.
-  - [x] Completed `README.md` documentation file.
-  - [x] Verified local environment prerequisites (Node.js v26.12.1, npm 11.20.0, Git, VS Code, PostgreSQL 18.6).
-  - [x] Initialized Next.js 16 (App Router) project structure, strict TypeScript configuration, and Tailwind CSS v4.
-  - [x] Created `.env.example` template with PostgreSQL and GitHub token definitions.
-  - [x] Configured `.gitignore` to prevent secret leakage.
+  - Completed `docs/PROJECT_SPEC.md` specification file (including daily normalized deduplication rule).
+  - Completed `PROJECT_STATUS.md` tracking file.
+  - Completed `README.md` documentation file.
+  - Verified local environment prerequisites (Node.js v26.12.1, npm 11.20.0, Git, VS Code, PostgreSQL 18.6).
+  - Initialized Next.js 16 (App Router) project structure, strict TypeScript configuration, and Tailwind CSS v4.
+  - Created `.env.example` template with PostgreSQL and GitHub token definitions.
+  - Configured `.gitignore` to prevent secret leakage.
 - [x] **Milestone 3: Portfolio UI (Initial Foundation)**
-  - [x] Portfolio Home (`/`) page structure and layout with Inter font.
-  - [x] Navigation header with responsive mobile hamburger drawer and links to Portfolio, Explorer, and Analytics.
-  - [x] Hero introduction for GitHub user `JOD-X8` with restrained lime glow styling.
-  - [x] About section with core engineering principles.
-  - [x] Technical Skills section with categorized competency badges.
-  - [x] Featured Projects showcase cards with tech stack badges and direct repository links.
-  - [x] Live GitHub statistics placeholder panel (explicitly labeled `[AWAITING INTEGRATION: MILESTONE 4]`).
-  - [x] Historical Analytics preview panel (explicitly labeled `[AWAITING INTEGRATION: MILESTONE 5]`).
-  - [x] Footer with navigation links, copyright, and external link to `https://github.com/JOD-X8`.
-  - [x] Secondary routes for `/explorer` and `/analytics` with roadmap status cards.
-  - [x] Zero fabricated data; all placeholders clearly marked.
-- [ ] **Milestone 4: GitHub API Integration** *(Next Milestone)*
-  - [ ] GitHub REST API client integration for public data.
-  - [ ] Live GitHub Explorer (`/explorer`) profile lookup for `JOD-X8`.
-  - [ ] Interactive repository search, language filter, and sorting controls.
-  - [ ] Language distribution chart.
-  - [ ] Rate-limit handling (403/429) and error states.
-- [ ] **Milestone 5: PostgreSQL & Prisma Historical Snapshots**
+  - Portfolio Home (`/`) page structure and layout with Inter font.
+  - Navigation header with responsive mobile hamburger drawer and links to Portfolio, Explorer, and Analytics.
+  - Hero introduction for GitHub user `JOD-X8` with restrained lime glow styling.
+  - About section with core engineering principles.
+  - Technical Skills section with categorized competency badges.
+  - Featured Projects showcase cards with tech stack badges and direct repository links.
+  - Footer with navigation links, copyright, and external link to `https://github.com/JOD-X8`.
+  - Secondary routes for `/explorer` and `/analytics` with status cards.
+- [x] **Milestone 4: GitHub API Integration** *(Completed)*
+  - [x] Implemented GitHub REST API utilities (`src/lib/github.ts`) with username validation, filtering, sorting, and language breakdown logic.
+  - [x] Created Next.js Route Handlers:
+    - `GET /api/github/profile/[username]` (with rate limit extraction & error handling)
+    - `GET /api/github/repos/[username]` (with repo list, stars/forks aggregation, and language breakdown)
+  - [x] Ensured public unauthenticated access works without requiring a token (optional `GITHUB_ACCESS_TOKEN` kept strictly server-side).
+  - [x] Implemented interactive GitHub Explorer (`/explorer`):
+    - Username search input with format validation (1–39 alphanumeric chars, single hyphens).
+    - Profile summary card with avatar, bio, location, company, website, joined date, and metric counters.
+    - Live text search across repository name, description, and topics.
+    - Dynamic language filter dropdown populated from fetched repositories.
+    - Multi-criteria sorting (stars, last updated date, alphabetical name).
+    - Zero-dependency `LanguageBreakdownBar` with proportion bar and interactive filter badges.
+    - Responsive `RepoCard` with star count, fork count, open issues, license, and language color dot.
+    - Clear states for loading skeletons, empty results, 404 user not found, and 429 rate limits.
+  - [x] Built `GitHubStatsLive` component on Portfolio Home (`/`), replacing placeholder with verified real metrics for `JOD-X8`.
+  - [x] Created focused unit tests in `tests/github.test.mjs` and verified with Node 26 native test runner.
+- [ ] **Milestone 5: PostgreSQL & Prisma Historical Snapshots** *(Next Milestone)*
   - [ ] Prisma schema definition (`TrackedProfile`, `StatsSnapshot` with daily deduplication on normalized `YYYY-MM-DD`).
   - [ ] PostgreSQL migration execution.
   - [ ] Snapshot aggregation script/API route.
@@ -72,85 +80,55 @@
 
 ## 3. Verification & Test Execution Results
 
-All linting and production build checks were executed locally and passed with zero errors:
+All unit tests, lint checks, and production builds were executed locally:
 
-| Check | Command Executed | Result | Notes |
+| Check / Test | Command Executed | Result | Details |
 | :--- | :--- | :--- | :--- |
-| **ESLint Check** | `npm run lint` | **PASS (0 errors, 0 warnings)** | Strict ESLint rules satisfied across all components and pages. |
-| **TypeScript / Type Check** | `next build` | **PASS** | TypeScript compilation completed in strict mode with no type errors. |
-| **Production Build** | `npm run build` | **PASS** | Static prerendering of all 4 routes (`/`, `/_not-found`, `/explorer`, `/analytics`) completed with Turbopack. |
+| **Unit Test Suite** | `npm test` (`node --experimental-strip-types --test`) | **PASS (7 tests passed, 0 failures, 160ms)** | Validated username rules, search filtering, language filtering, 3-way sorting, language breakdown calculations, and rate-limit header parsing. |
+| **ESLint Check** | `npm run lint` | **PASS (0 errors, 0 warnings)** | Strict ESLint rules verified across all components, pages, and route handlers. |
+| **Production Build** | `npm run build` | **PASS (Turbopack)** | Successfully generated all static pages (`/`, `/explorer`, `/analytics`, `/_not-found`) and dynamic route handlers (`/api/github/profile/[username]`, `/api/github/repos/[username]`). |
+| **Live Server Route Tests** | `Invoke-WebRequest` on `/`, `/explorer`, `/analytics` | **PASS (HTTP 200 OK)** | All pages render properly without runtime crashes. |
+| **Live GitHub API Tests** | `Invoke-RestMethod` on `/api/github/profile/JOD-X8` and `/api/github/repos/JOD-X8` | **PASS (HTTP 200 OK)** | Verified real GitHub data returned: 16 public repos, real language counts, stars, and avatar. |
+| **Invalid Username Test** | `Invoke-RestMethod` on `/api/github/profile/invalid--user` | **PASS (HTTP 400 Bad Request)** | Handled with informative validation error message. |
+| **Non-existent User Test**| `Invoke-RestMethod` on `/api/github/profile/nonexistent-user-123456789-xyz` | **PASS (HTTP 404 Not Found)** | Handled with user-not-found message. |
 
 ---
 
 ## 4. Current State: What Is Completed vs. Not Completed
 
 ### Completed Items
-- **Documentation Integrity:** Preserved all original documentation files (`README.md`, `docs/PROJECT_SPEC.md`, `PROJECT_STATUS.md`).
-- **Framework & Tooling:** Next.js 16.4.3 (App Router), React 19.3.0, TypeScript 5, Tailwind CSS v4, and Lucide React.
-- **Design System Fidelity:**
-  - Background: `#0B0D0C`
-  - Cards: `#171A18`
-  - Accent: `#B7FF3C`
-  - Text Primary: `#E8ECE8`
-  - Text Secondary: `#9BA39B`
-  - Border: `#262B27`
-  - Font: Inter (`next/font/google`)
-  - Restrained neon-lime glow utilities.
-- **Components Implemented:**
-  - `Navbar.tsx` (responsive with mobile drawer)
-  - `HeroSection.tsx` (headline, bio for `JOD-X8`, CTAs)
-  - `AboutSection.tsx` (engineering principles)
-  - `SkillsSection.tsx` (categorized proficiency matrix)
-  - `ProjectsSection.tsx` (flagship portfolio cards)
-  - `GitHubStatsPlaceholder.tsx` (clearly labeled pending integration)
-  - `HistoricalAnalyticsPreview.tsx` (clearly labeled pending integration)
-  - `Footer.tsx` (accessible footer with verified links)
-  - `GithubIcon.tsx` (reusable clean SVG icon)
-- **Pages Implemented:**
-  - `/` (Home landing page)
-  - `/explorer` (Scaffolded explorer page with Milestone 4 status)
-  - `/analytics` (Scaffolded analytics page with Milestone 5 status)
+- **GitHub REST API Integration:** Fully operational with live data for profile `JOD-X8` and any valid public GitHub user.
+- **Route Handlers:** `/api/github/profile/[username]` and `/api/github/repos/[username]`.
+- **Security:** Token support is optional and strictly server-side (`process.env.GITHUB_ACCESS_TOKEN`); no tokens in client code or Git.
+- **UI Components:**
+  - `GitHubStatsLive.tsx` (real stats on Home page)
+  - `LanguageBreakdownBar.tsx` (zero-dependency interactive visual proportion bar)
+  - `RepoCard.tsx` (repo card with metadata, stars, forks, issues, license, language dot)
+  - `RateLimitBanner.tsx` (quota status and reset countdown notice)
+- **Explorer Page:** Live search, language filtering, sorting, profile card, error banners, and loading skeletons.
+- **Testing:** 7 automated unit tests in `tests/github.test.mjs`.
 
 ### Not Completed Items (Explicitly Deferred to Later Milestones)
-- **GitHub REST API Integration:** No live API requests to GitHub are made yet (deferred to Milestone 4).
 - **PostgreSQL Database & Prisma:** No database tables, migrations, or snapshot records exist yet (deferred to Milestone 5).
 - **Snapshot Automation:** No cron jobs or snapshot generation scripts are active.
+- **Historical Analytics Page (`/analytics`):** Remains in an honest preview state stating that historical tracking begins when collection starts in Milestone 5.
 - **Vercel Deployment:** Production deployment pipeline has not been triggered yet.
 - **Git Commit/Push:** Changes remain uncommitted locally for user review.
 
 ---
 
-## 5. Exact Next Steps
+## 5. Known Limitations
 
-When moving to **Milestone 4: GitHub API Integration**:
-1. **GitHub API Client:** Implement server-side client module fetching public user data and repositories for `https://api.github.com/users/JOD-X8`.
-2. **Rate Limit & Error Handling:** Implement detection for remaining rate limit quotas and proper 403/404 fallbacks.
-3. **Live Stats Hydration:** Replace the placeholder cards in `GitHubStatsPlaceholder` with live public repo count, star total, fork total, and follower metrics.
-4. **Explorer Functionality:** Implement live search, language filtering dropdown, and sorting by stars / update date on `/explorer`.
+- **Unauthenticated Rate Limits:** The default public unauthenticated rate limit is 60 requests per hour per IP. When depleted, the application displays a friendly warning banner indicating the exact reset time. Adding an optional `GITHUB_ACCESS_TOKEN` in `.env.local` raises this limit to 5,000 requests per hour.
+- **Public Visibility Only:** Only public repositories and public profile information are queried; private repositories are omitted by design.
+- **Historical Scope:** Historical trend analysis will begin once Milestone 5 (PostgreSQL & Prisma) is activated. Past statistics prior to collection are not available and will never be fabricated.
 
 ---
 
-## 6. Continuity Guide: Resuming Work Without Antigravity
+## 6. Exact Next Steps
 
-If Antigravity session limits or token allowances run out, development can seamlessly continue using **Visual Studio Code** and **PowerShell**:
-
-### Step 1: Open the Project in VS Code
-```powershell
-cd "C:\D drive\THE PROJECT\developer-portfolio-github-analytics"
-code .
-```
-
-### Step 2: Start the Local Development Server
-```powershell
-npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Step 3: Run Validation Checks
-```powershell
-npm run lint
-npm run build
-```
-
-### Step 4: Maintaining the Status Document
-Update this file (`PROJECT_STATUS.md`) whenever a milestone or feature is completed.
+When moving to **Milestone 5: PostgreSQL & Prisma Historical Snapshots**:
+1. **Prisma Setup:** Install and initialize Prisma ORM with PostgreSQL provider.
+2. **Schema Migration:** Define and apply models for `TrackedProfile` and `StatsSnapshot` with unique constraint on `[profileId, snapshotDate]` (normalized `YYYY-MM-DD`).
+3. **Snapshot Collector Service:** Build an automated or on-demand service to capture daily snapshots of total stars, total forks, and repository counts.
+4. **Historical Analytics Dashboard:** Replace the preview panel on `/analytics` with interactive trend charts and historical audit tables.
