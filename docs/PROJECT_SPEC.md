@@ -218,13 +218,20 @@ Every interactive view must handle standard asynchronous states cleanly:
 | id             String (CUID/UUID)  |    |
 | profileId      String (FK) --------+----+
 | capturedAt     DateTime            |
+| snapshotDate   DateTime (@db.Date) |
 | publicRepoCount Int                |
 | totalStars     Int                 |
 | totalForks     Int                 |
 +------------------------------------+
 ```
 
-### 7.3 Schema Definition Draft (Prisma)
+### 7.3 Schema Definition Draft (Prisma) & Daily Deduplication Strategy
+
+> [!IMPORTANT]
+> **Daily Deduplication Rule:** Historical statistics must record at most **one snapshot per tracked profile per calendar day**, using the normalized calendar date (`YYYY-MM-DD`). A collection timestamp alone must **not** be used to enforce daily deduplication, as different timestamps on the same day would permit unintended duplicate records.
+> 
+> **Milestone 5 Database Enforcement Strategy:** In Milestone 5 (PostgreSQL & Prisma Historical Snapshots), deduplication will be enforced at the database layer (for example, via a normalized `snapshotDate` column truncated to the calendar date with a compound unique constraint on `[profileId, snapshotDate]`, or date-normalized upsert constraints). The exact implementation approach (e.g., PostgreSQL native `@db.Date`, ISO date string, or composite migration constraint) will be finalized during that database implementation milestone.
+
 ```prisma
 datasource db {
   provider = "postgresql"
@@ -251,13 +258,14 @@ model StatsSnapshot {
   profileId       String
   profile         TrackedProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   capturedAt      DateTime       @default(now())
+  snapshotDate    DateTime       @db.Date // Normalized YYYY-MM-DD date
   publicRepoCount Int
   totalStars      Int
   totalForks      Int
 
   @@index([profileId, capturedAt])
-  // Deduplication guard: one snapshot per profile per day
-  @@unique([profileId, capturedAt])
+  // Daily deduplication guard: at most one snapshot per profile per calendar day
+  @@unique([profileId, snapshotDate])
 }
 ```
 
