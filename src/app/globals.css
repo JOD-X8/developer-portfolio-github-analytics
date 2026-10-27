@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #0B0D0C;
+  --color-surface-card: #171A18;
+  --color-surface-hover: #1E2320;
+  --color-border-subtle: #262B27;
+  --color-border-hover: #3A423C;
+  --color-accent-lime: #B7FF3C;
+  --color-accent-lime-muted: rgba(183, 255, 60, 0.12);
+  --color-text-primary: #E8ECE8;
+  --color-text-secondary: #9BA39B;
+  --color-text-muted: #6C756D;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #0B0D0C;
+  color: #E8ECE8;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Restrained Neon Lime Glow Utility Classes */
+.glow-lime-sm {
+  box-shadow: 0 0 16px rgba(183, 255, 60, 0.15);
+}
+
+.glow-lime-md {
+  box-shadow: 0 0 28px rgba(183, 255, 60, 0.22);
+}
+
+.glow-lime-border {
+  border-color: rgba(183, 255, 60, 0.45);
+  box-shadow: 0 0 20px rgba(183, 255, 60, 0.18);
+}
+
+.text-glow-lime {
+  text-shadow: 0 0 14px rgba(183, 255, 60, 0.5);
+}
