@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getHistoricalAnalyticsData } from "@/lib/analytics";
+import { getHistoricalAnalyticsData, parseDaysQueryParam } from "@/lib/analytics";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const daysParam = searchParams.get("days");
-    const days = daysParam ? parseInt(daysParam, 10) : undefined;
+    const validation = parseDaysQueryParam(searchParams.get("days"));
 
-    const data = await getHistoricalAnalyticsData(days);
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error || "Invalid days parameter. Must be a positive integer." },
+        { status: 400 }
+      );
+    }
+
+    const data = await getHistoricalAnalyticsData(validation.days);
 
     return NextResponse.json(data, {
       status: 200,
@@ -16,9 +22,13 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to fetch historical analytics";
+    // Let Next.js internal prerender interrupts bubble up
+    if ((error as { digest?: string })?.digest === "NEXT_PRERENDER_INTERRUPTED") {
+      throw error;
+    }
+    console.error("[API Error] Failed to fetch snapshots:", error);
     return NextResponse.json(
-      { error: message },
+      { error: "An unexpected error occurred while fetching historical analytics." },
       { status: 500 }
     );
   }

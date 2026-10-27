@@ -64,7 +64,7 @@ export function Footer() {
           <div className="flex items-center gap-2">
             <span>© {currentYear} JOD-X8. All rights reserved.</span>
             <span>•</span>
-            <span className="font-mono text-[#B7FF3C]">Milestone 2 Foundation</span>
+            <span className="font-mono text-[#B7FF3C]">Developer Portfolio & Analytics</span>
           </div>
 
           <div className="flex items-center gap-3">

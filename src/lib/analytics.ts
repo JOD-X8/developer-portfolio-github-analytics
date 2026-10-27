@@ -60,6 +60,36 @@ export function formatSnapshotDateString(date: Date): string {
   return normalized.toISOString().slice(0, 10);
 }
 
+export interface DaysValidationResult {
+  valid: boolean;
+  days?: number;
+  error?: string;
+}
+
+/**
+ * Validates and parses the 'days' query parameter for historical analytics.
+ * Strictly accepts complete positive integer strings, clamps values above 365 to 365,
+ * and preserves undefined when the parameter is omitted.
+ */
+export function parseDaysQueryParam(daysParam: string | null | undefined): DaysValidationResult {
+  if (daysParam === null || daysParam === undefined) {
+    return { valid: true, days: undefined };
+  }
+
+  if (!/^[1-9]\d*$/.test(daysParam)) {
+    return {
+      valid: false,
+      error: "Invalid days parameter. Must be a positive integer.",
+    };
+  }
+
+  const parsed = parseInt(daysParam, 10);
+  return {
+    valid: true,
+    days: Math.min(parsed, 365),
+  };
+}
+
 export interface RecordSnapshotParams {
   username: string;
   profile: GitHubProfile;
@@ -190,11 +220,11 @@ export async function recordStatsSnapshot({
       },
     };
   } catch (error: unknown) {
-    const errMessage = error instanceof Error ? error.message : "Database operation failed.";
+    console.error("[Database Error] Failed to persist stats snapshot:", error);
     return {
       success: false,
-      message: "Failed to persist snapshot to database.",
-      error: errMessage,
+      message: "Database operation failed. Unable to persist snapshot at this time.",
+      error: "DATABASE_OPERATION_FAILED",
       statusCode: 500,
     };
   }
@@ -286,7 +316,7 @@ export async function getHistoricalAnalyticsData(days?: number): Promise<Histori
       databaseAvailable: true,
     };
   } catch (error: unknown) {
-    const errMessage = error instanceof Error ? error.message : "Database connection unavailable";
+    console.error("[Database Error] Failed to retrieve historical analytics:", error);
     return {
       configuredUsername: configured,
       isConfigured: true,
@@ -294,7 +324,7 @@ export async function getHistoricalAnalyticsData(days?: number): Promise<Histori
       snapshots: [],
       totalSnapshots: 0,
       databaseAvailable: false,
-      message: `Database connection unavailable: ${errMessage}. Please configure a valid DATABASE_URL in .env.local and run prisma migrate.`,
+      message: "Database connection unavailable. Please check that PostgreSQL is running and a valid DATABASE_URL is configured in .env.local.",
     };
   }
 }

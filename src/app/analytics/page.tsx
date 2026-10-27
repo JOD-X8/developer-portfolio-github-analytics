@@ -335,13 +335,14 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Date Range Selector Toolbar */}
-          <div className="flex items-center justify-between gap-4 rounded-xl border border-[#262B27] bg-[#171A18] p-3.5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-[#262B27] bg-[#171A18] p-3.5">
             <span className="text-xs font-semibold text-[#E8ECE8]">Historical Snapshot Window:</span>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5" role="group" aria-label="Historical snapshot timeframe filter">
               <button
                 type="button"
                 onClick={() => setSelectedRange(7)}
-                className={`rounded-md px-3 py-1 text-xs font-mono transition-all ${
+                aria-pressed={selectedRange === 7}
+                className={`rounded-md px-3 py-1 text-xs font-mono transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] ${
                   selectedRange === 7
                     ? "bg-[#B7FF3C] text-[#0B0D0C] font-semibold"
                     : "text-[#9BA39B] hover:text-[#E8ECE8] bg-[#0B0D0C] border border-[#262B27]"
@@ -352,7 +353,8 @@ export default function AnalyticsPage() {
               <button
                 type="button"
                 onClick={() => setSelectedRange(30)}
-                className={`rounded-md px-3 py-1 text-xs font-mono transition-all ${
+                aria-pressed={selectedRange === 30}
+                className={`rounded-md px-3 py-1 text-xs font-mono transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] ${
                   selectedRange === 30
                     ? "bg-[#B7FF3C] text-[#0B0D0C] font-semibold"
                     : "text-[#9BA39B] hover:text-[#E8ECE8] bg-[#0B0D0C] border border-[#262B27]"
@@ -363,7 +365,8 @@ export default function AnalyticsPage() {
               <button
                 type="button"
                 onClick={() => setSelectedRange(undefined)}
-                className={`rounded-md px-3 py-1 text-xs font-mono transition-all ${
+                aria-pressed={selectedRange === undefined}
+                className={`rounded-md px-3 py-1 text-xs font-mono transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] ${
                   selectedRange === undefined
                     ? "bg-[#B7FF3C] text-[#0B0D0C] font-semibold"
                     : "text-[#9BA39B] hover:text-[#E8ECE8] bg-[#0B0D0C] border border-[#262B27]"
@@ -390,14 +393,15 @@ export default function AnalyticsPage() {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
+                <caption className="sr-only">Historical GitHub statistics snapshot audit log</caption>
                 <thead className="border-b border-[#262B27] bg-[#0B0D0C] text-[#9BA39B] font-mono uppercase tracking-wider text-[10px]">
                   <tr>
-                    <th className="px-5 py-3">Snapshot Date</th>
-                    <th className="px-5 py-3">Public Repos</th>
-                    <th className="px-5 py-3">Total Stars</th>
-                    <th className="px-5 py-3">Total Forks</th>
-                    <th className="px-5 py-3">Followers</th>
-                    <th className="px-5 py-3">Captured At</th>
+                    <th scope="col" className="px-5 py-3">Snapshot Date</th>
+                    <th scope="col" className="px-5 py-3">Public Repos</th>
+                    <th scope="col" className="px-5 py-3">Total Stars</th>
+                    <th scope="col" className="px-5 py-3">Total Forks</th>
+                    <th scope="col" className="px-5 py-3">Followers</th>
+                    <th scope="col" className="px-5 py-3">Captured At</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#262B27] font-mono text-[#E8ECE8]">

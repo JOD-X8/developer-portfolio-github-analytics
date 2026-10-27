@@ -38,8 +38,8 @@ export function LanguageBreakdownBar({
       {/* Horizontal Stacked Proportion Bar */}
       <div
         className="flex h-3 w-full overflow-hidden rounded-full bg-[#0B0D0C] border border-[#262B27]"
-        role="progressbar"
-        aria-label="Language distribution bar"
+        role="img"
+        aria-label={`Language distribution: ${languages.map((l) => `${l.language} ${l.percentage}%`).join(", ")}`}
       >
         {languages.map((item, idx) => (
           <div
@@ -55,11 +55,12 @@ export function LanguageBreakdownBar({
       </div>
 
       {/* Language Pills / Interactive Legend */}
-      <div className="mt-4 flex flex-wrap gap-2.5">
+      <div className="mt-4 flex flex-wrap gap-2.5" role="group" aria-label="Filter repositories by language">
         <button
           type="button"
           onClick={() => onSelectLanguage("ALL")}
-          className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+          aria-pressed={selectedLanguage === "ALL"}
+          className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] ${
             selectedLanguage === "ALL"
               ? "border border-[#B7FF3C] bg-[#B7FF3C]/10 text-[#B7FF3C] glow-lime-sm"
               : "border border-[#262B27] bg-[#0B0D0C] text-[#9BA39B] hover:border-[#3A423C] hover:text-[#E8ECE8]"
@@ -75,7 +76,8 @@ export function LanguageBreakdownBar({
               key={idx}
               type="button"
               onClick={() => onSelectLanguage(isSelected ? "ALL" : item.language)}
-              className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+              aria-pressed={isSelected}
+              className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] ${
                 isSelected
                   ? "border border-[#B7FF3C] bg-[#B7FF3C]/10 text-[#B7FF3C] glow-lime-sm"
                   : "border border-[#262B27] bg-[#0B0D0C] text-[#9BA39B] hover:border-[#3A423C] hover:text-[#E8ECE8]"

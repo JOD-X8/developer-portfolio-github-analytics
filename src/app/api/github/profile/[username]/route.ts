@@ -91,9 +91,9 @@ export async function GET(
       }
     );
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to fetch GitHub profile";
+    console.error("[GitHub API Error] Failed to fetch profile:", error);
     return NextResponse.json(
-      { error: message },
+      { error: "An unexpected error occurred while fetching the GitHub profile." },
       { status: 500 }
     );
   }

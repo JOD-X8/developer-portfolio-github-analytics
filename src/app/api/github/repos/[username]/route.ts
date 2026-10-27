@@ -109,9 +109,9 @@ export async function GET(
       }
     );
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to fetch GitHub repositories";
+    console.error("[GitHub API Error] Failed to fetch repositories:", error);
     return NextResponse.json(
-      { error: message },
+      { error: "An unexpected error occurred while fetching GitHub repositories." },
       { status: 500 }
     );
   }

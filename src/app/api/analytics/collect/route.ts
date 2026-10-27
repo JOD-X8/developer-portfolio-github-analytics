@@ -93,9 +93,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result, { status: 200 });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to record snapshot";
+    console.error("[API Error] Failed to record snapshot:", error);
     return NextResponse.json(
-      { error: message },
+      { error: "An unexpected error occurred while capturing the daily snapshot." },
       { status: 500 }
     );
   }

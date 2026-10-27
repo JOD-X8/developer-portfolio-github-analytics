@@ -99,11 +99,12 @@ export function AnalyticsTrendChart({ snapshots }: AnalyticsTrendChartProps) {
         </div>
 
         {/* Metric Switcher */}
-        <div className="flex items-center gap-1.5 rounded-lg border border-[#262B27] bg-[#0B0D0C] p-1">
+        <div className="flex items-center gap-1.5 rounded-lg border border-[#262B27] bg-[#0B0D0C] p-1" role="group" aria-label="Select metric to display in chart">
           <button
             type="button"
             onClick={() => setActiveMetric("totalStars")}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+            aria-pressed={activeMetric === "totalStars"}
+            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] ${
               activeMetric === "totalStars"
                 ? "bg-[#B7FF3C] text-[#0B0D0C] font-semibold"
                 : "text-[#9BA39B] hover:text-[#E8ECE8]"
@@ -114,7 +115,8 @@ export function AnalyticsTrendChart({ snapshots }: AnalyticsTrendChartProps) {
           <button
             type="button"
             onClick={() => setActiveMetric("publicRepoCount")}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+            aria-pressed={activeMetric === "publicRepoCount"}
+            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] ${
               activeMetric === "publicRepoCount"
                 ? "bg-[#B7FF3C] text-[#0B0D0C] font-semibold"
                 : "text-[#9BA39B] hover:text-[#E8ECE8]"
@@ -125,7 +127,8 @@ export function AnalyticsTrendChart({ snapshots }: AnalyticsTrendChartProps) {
           <button
             type="button"
             onClick={() => setActiveMetric("totalForks")}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+            aria-pressed={activeMetric === "totalForks"}
+            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] ${
               activeMetric === "totalForks"
                 ? "bg-[#B7FF3C] text-[#0B0D0C] font-semibold"
                 : "text-[#9BA39B] hover:text-[#E8ECE8]"
@@ -136,12 +139,38 @@ export function AnalyticsTrendChart({ snapshots }: AnalyticsTrendChartProps) {
         </div>
       </div>
 
+      {/* Screen-reader-only accessible data summary */}
+      <div className="sr-only">
+        <h4>{metricLabels[activeMetric]} Trend Summary</h4>
+        <p>
+          Historical progression across {snapshots.length} dates from {snapshots[0].snapshotDate} ({snapshots[0][activeMetric]}) to {snapshots[snapshots.length - 1].snapshotDate} ({snapshots[snapshots.length - 1][activeMetric]}).
+        </p>
+        <table>
+          <caption>Recorded {metricLabels[activeMetric]} points</caption>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">{metricLabels[activeMetric]}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {snapshots.map((s) => (
+              <tr key={s.id}>
+                <td>{s.snapshotDate}</td>
+                <td>{s[activeMetric]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       {/* SVG Responsive Chart */}
       <div className="mt-4 w-full overflow-x-auto">
         <svg
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-          className="w-full h-auto min-w-[500px]"
-          aria-label={`Trend chart for ${metricLabels[activeMetric]}`}
+          className="w-full h-auto min-w-[320px]"
+          role="img"
+          aria-label={`Trend chart for ${metricLabels[activeMetric]} across ${snapshots.length} dates from ${snapshots[0].snapshotDate} to ${snapshots[snapshots.length - 1].snapshotDate}`}
         >
           <defs>
             <linearGradient id="limeGradient" x1="0" y1="0" x2="0" y2="1">

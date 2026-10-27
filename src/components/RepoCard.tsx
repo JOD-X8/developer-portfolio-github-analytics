@@ -24,10 +24,10 @@ export function RepoCard({ repo }: RepoCardProps) {
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 font-mono text-base font-bold text-[#E8ECE8] hover:text-[#B7FF3C] transition-colors break-all"
+            className="group inline-flex items-center gap-1.5 font-mono text-base font-bold text-[#E8ECE8] hover:text-[#B7FF3C] transition-colors break-all rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C]"
           >
             <span>{repo.name}</span>
-            <ExternalLink className="h-3.5 w-3.5 opacity-60 group-hover:opacity-100 transition-opacity shrink-0" />
+            <ExternalLink className="h-3.5 w-3.5 opacity-60 group-hover:opacity-100 transition-opacity shrink-0" aria-hidden="true" />
           </a>
 
           {repo.fork && (

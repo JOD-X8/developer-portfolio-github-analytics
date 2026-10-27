@@ -401,19 +401,20 @@ export default function ExplorerPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search repositories by name, description, or topic..."
-              className="w-full rounded-lg border border-[#262B27] bg-[#0B0D0C] py-2 pl-9 pr-4 text-xs text-[#E8ECE8] placeholder-[#9BA39B] focus:border-[#B7FF3C] focus:outline-none"
+              className="w-full rounded-lg border border-[#262B27] bg-[#0B0D0C] py-2 pl-9 pr-4 text-xs text-[#E8ECE8] placeholder-[#9BA39B] focus:border-[#B7FF3C] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#B7FF3C]"
+              aria-label="Search repositories"
             />
           </div>
 
           {/* Controls: Language Filter & Sort */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5">
             {/* Language Filter Dropdown */}
-            <div className="flex items-center gap-1.5 rounded-lg border border-[#262B27] bg-[#0B0D0C] px-3 py-1.5 text-xs text-[#9BA39B]">
-              <Filter className="h-3.5 w-3.5 text-[#B7FF3C]" />
+            <div className="flex flex-1 sm:flex-none items-center gap-1.5 rounded-lg border border-[#262B27] bg-[#0B0D0C] px-3 py-1.5 text-xs text-[#9BA39B] focus-within:border-[#B7FF3C]">
+              <Filter className="h-3.5 w-3.5 text-[#B7FF3C] shrink-0" />
               <select
                 value={selectedLanguage}
                 onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="bg-transparent text-[#E8ECE8] focus:outline-none cursor-pointer"
+                className="w-full bg-transparent text-[#E8ECE8] focus:outline-none cursor-pointer"
                 aria-label="Filter repositories by language"
               >
                 <option value="ALL" className="bg-[#171A18] text-[#E8ECE8]">
@@ -428,12 +429,12 @@ export default function ExplorerPage() {
             </div>
 
             {/* Sort Dropdown */}
-            <div className="flex items-center gap-1.5 rounded-lg border border-[#262B27] bg-[#0B0D0C] px-3 py-1.5 text-xs text-[#9BA39B]">
-              <ArrowUpDown className="h-3.5 w-3.5 text-[#B7FF3C]" />
+            <div className="flex flex-1 sm:flex-none items-center gap-1.5 rounded-lg border border-[#262B27] bg-[#0B0D0C] px-3 py-1.5 text-xs text-[#9BA39B] focus-within:border-[#B7FF3C]">
+              <ArrowUpDown className="h-3.5 w-3.5 text-[#B7FF3C] shrink-0" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="bg-transparent text-[#E8ECE8] focus:outline-none cursor-pointer"
+                className="w-full bg-transparent text-[#E8ECE8] focus:outline-none cursor-pointer"
                 aria-label="Sort repositories"
               >
                 <option value="stars" className="bg-[#171A18] text-[#E8ECE8]">

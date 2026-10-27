@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, BarChart3, Compass, User } from "lucide-react";
 import { GithubIcon } from "@/components/icons/GithubIcon";
@@ -8,13 +8,24 @@ import { GithubIcon } from "@/components/icons/GithubIcon";
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Close mobile menu on Escape key press for keyboard accessibility
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isMobileMenuOpen]);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#262B27] bg-[#0B0D0C]/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
         {/* Brand / Logo */}
         <Link
           href="/"
-          className="group flex items-center gap-2.5 transition-colors"
+          className="group flex items-center gap-2.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C]"
           aria-label="Home"
         >
           <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#262B27] bg-[#171A18] text-[#B7FF3C] transition-all group-hover:border-[#B7FF3C]/50 group-hover:glow-lime-sm">
@@ -37,38 +48,38 @@ export function Navbar() {
         >
           <Link
             href="/"
-            className="text-sm font-medium text-[#E8ECE8] hover:text-[#B7FF3C] transition-colors"
+            className="text-sm font-medium text-[#E8ECE8] hover:text-[#B7FF3C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] rounded px-1"
           >
             Portfolio
           </Link>
           <Link
             href="/#about"
-            className="text-sm font-medium text-[#9BA39B] hover:text-[#E8ECE8] transition-colors"
+            className="text-sm font-medium text-[#9BA39B] hover:text-[#E8ECE8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] rounded px-1"
           >
             About
           </Link>
           <Link
             href="/#skills"
-            className="text-sm font-medium text-[#9BA39B] hover:text-[#E8ECE8] transition-colors"
+            className="text-sm font-medium text-[#9BA39B] hover:text-[#E8ECE8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] rounded px-1"
           >
             Skills
           </Link>
           <Link
             href="/#projects"
-            className="text-sm font-medium text-[#9BA39B] hover:text-[#E8ECE8] transition-colors"
+            className="text-sm font-medium text-[#9BA39B] hover:text-[#E8ECE8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] rounded px-1"
           >
             Projects
           </Link>
           <Link
             href="/explorer"
-            className="flex items-center gap-1.5 text-sm font-medium text-[#9BA39B] hover:text-[#B7FF3C] transition-colors"
+            className="flex items-center gap-1.5 text-sm font-medium text-[#9BA39B] hover:text-[#B7FF3C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] rounded px-1"
           >
             <Compass className="h-4 w-4" />
             <span>GitHub Explorer</span>
           </Link>
           <Link
             href="/analytics"
-            className="flex items-center gap-1.5 text-sm font-medium text-[#9BA39B] hover:text-[#B7FF3C] transition-colors"
+            className="flex items-center gap-1.5 text-sm font-medium text-[#9BA39B] hover:text-[#B7FF3C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C] rounded px-1"
           >
             <BarChart3 className="h-4 w-4" />
             <span>Analytics</span>
@@ -81,9 +92,9 @@ export function Navbar() {
             href="https://github.com/JOD-X8"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-lg border border-[#262B27] bg-[#171A18] px-3.5 py-2 text-xs font-semibold text-[#E8ECE8] transition-all hover:border-[#B7FF3C]/60 hover:text-[#B7FF3C] hover:glow-lime-sm"
+            className="flex items-center gap-2 rounded-lg border border-[#262B27] bg-[#171A18] px-3.5 py-2 text-xs font-semibold text-[#E8ECE8] transition-all hover:border-[#B7FF3C]/60 hover:text-[#B7FF3C] hover:glow-lime-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C]"
           >
-                <GithubIcon className="h-4 w-4" />
+            <GithubIcon className="h-4 w-4" />
             <span>GitHub</span>
           </a>
         </div>
@@ -95,7 +106,7 @@ export function Navbar() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMobileMenuOpen}
-            className="rounded-lg border border-[#262B27] bg-[#171A18] p-2 text-[#9BA39B] hover:text-[#E8ECE8] hover:border-[#B7FF3C]/40"
+            className="rounded-lg border border-[#262B27] bg-[#171A18] p-2 text-[#9BA39B] hover:text-[#E8ECE8] hover:border-[#B7FF3C]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7FF3C]"
           >
             {isMobileMenuOpen ? (
               <X className="h-5 w-5" />
@@ -109,7 +120,7 @@ export function Navbar() {
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
         <div className="border-b border-[#262B27] bg-[#171A18] px-4 pb-5 pt-3 md:hidden">
-          <nav className="flex flex-col gap-3">
+          <nav className="flex flex-col gap-3" aria-label="Mobile Navigation">
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
