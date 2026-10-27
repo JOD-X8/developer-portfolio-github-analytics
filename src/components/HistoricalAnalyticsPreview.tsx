@@ -21,10 +21,10 @@ export function HistoricalAnalyticsPreview() {
             </p>
           </div>
 
-          {/* Pending Integration Notice Badge */}
-          <div className="inline-flex items-center gap-2 rounded-lg border border-[#B7FF3C]/30 bg-[#171A18] px-3.5 py-2 text-xs font-mono text-[#B7FF3C] self-start md:self-auto">
+          {/* Engine Ready Notice Badge */}
+          <div className="inline-flex items-center gap-2 rounded-lg border border-[#B7FF3C]/40 bg-[#171A18] px-3.5 py-2 text-xs font-mono text-[#B7FF3C] self-start md:self-auto glow-lime-sm">
             <Database className="h-4 w-4" />
-            <span>AWAITING INTEGRATION (MILESTONE 5)</span>
+            <span>POSTGRESQL & PRISMA READY</span>
           </div>
         </div>
 
@@ -61,15 +61,15 @@ export function HistoricalAnalyticsPreview() {
 
             <p className="mx-auto mt-2 max-w-lg text-xs leading-relaxed text-[#9BA39B]">
               In accordance with our strict data integrity specification, past statistics will never be fabricated or backfilled. 
-              Once the PostgreSQL database and snapshot cron/API route are implemented in <strong>Milestone 5</strong>, verifiable metrics will record daily snapshots.
+              The PostgreSQL 18 schema and daily snapshot service are active with automatic daily deduplication.
             </p>
 
             <div className="mt-6 inline-flex">
               <Link
                 href="/analytics"
-                className="inline-flex items-center gap-2 rounded-lg border border-[#262B27] bg-[#171A18] px-4 py-2 text-xs font-semibold text-[#E8ECE8] hover:border-[#B7FF3C]/50 hover:text-[#B7FF3C] transition-all"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#B7FF3C] px-5 py-2.5 text-xs font-semibold text-[#0B0D0C] hover:bg-[#a6ec31] hover:glow-lime-sm transition-all"
               >
-                <span>View Analytics Architecture Page</span>
+                <span>Open Historical Analytics Dashboard</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>

@@ -1,0 +1,41 @@
+// Prisma Schema for Developer Portfolio & GitHub Analytics
+// Milestone 5: PostgreSQL + Prisma Historical Analytics
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TrackedProfile {
+  id             String          @id @default(cuid())
+  username       String          @unique // Normalized lowercase username (e.g., 'jod-x8')
+  canonicalName  String?         // Preserves casing as returned by GitHub (e.g., 'JOD-X8')
+  profileUrl     String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  lastSnapshotAt DateTime?
+  snapshots      StatsSnapshot[]
+
+  @@index([username])
+}
+
+model StatsSnapshot {
+  id                String         @id @default(cuid())
+  profileId         String
+  profile           TrackedProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  snapshotDate      DateTime       @db.Date // Normalized UTC calendar date (YYYY-MM-DD)
+  capturedAt        DateTime       @default(now()) // Timestamp of snapshot execution
+  publicRepoCount   Int            @default(0)
+  followers         Int            @default(0)
+  following         Int            @default(0)
+  totalStars        Int            @default(0)
+  totalForks        Int            @default(0)
+  languageBreakdown Json?          // Structured language distribution: [{ language, count, percentage, color }]
+
+  @@unique([profileId, snapshotDate]) // Strict database-level deduplication: 1 snapshot per profile per calendar day
+  @@index([profileId, snapshotDate])
+}
